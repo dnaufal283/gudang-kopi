@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Arabica Warehouse Management</title>
+    <!-- PWA Settings -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#0C0604">
+    <link rel="apple-touch-icon" href="/images/logo.svg">
+    <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        coffee: {
+                            50: '#FDFBF7',
+                            100: '#F3EFE9',
+                            200: '#E6DEC9',
+                            300: '#D5C4A1',
+                            400: '#B09874',
+                            500: '#8E704D',
+                            600: '#735238',
+                            700: '#5A3D2A',
+                            800: '#3D2518',
+                            900: '#1F100A',
+                            950: '#0C0604',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0c0604;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(142, 112, 77, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(31, 16, 10, 0.4) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(142, 112, 77, 0.05) 0px, transparent 80%);
+        }
+        .glass-card {
+            background: rgba(31, 16, 10, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        .glow-button {
+            box-shadow: 0 0 15px rgba(213, 196, 161, 0.2);
+            transition: all 0.3s ease;
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 25px rgba(213, 196, 161, 0.45);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 overflow-hidden relative">
+    
+    <!-- Animated background glowing circles -->
+    <div class="absolute w-[300px] h-[300px] rounded-full bg-coffee-500/10 blur-[100px] top-10 left-10 animate-pulse"></div>
+    <div class="absolute w-[400px] h-[400px] rounded-full bg-coffee-800/20 blur-[120px] bottom-10 right-10 animate-pulse" style="animation-duration: 8s;"></div>
+
+    <div class="w-full max-w-md z-10">
+        <!-- Brand identity -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-coffee-800 to-coffee-500 border border-coffee-400/20 shadow-xl mb-4">
+                <i class="fa-solid fa-mug-hot text-2xl text-coffee-100"></i>
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight text-white">ARABICA<span class="text-coffee-400">.CO</span></h1>
+            <p class="text-coffee-300/60 mt-2 font-medium">Warehouse Management System v2.0</p>
+        </div>
+
+        <!-- Glassmorphic Login Form -->
+        <div class="glass-card rounded-3xl p-8 border border-white/5 relative overflow-hidden">
+            <!-- Decorative border glow -->
+            <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-coffee-400/40 to-transparent"></div>
+
+            <h2 class="text-xl font-semibold text-white mb-6 text-center">Masuk ke Dashboard</h2>
+
+            <!-- Success or Error Alert -->
+            <div th:if="${error}" class="mb-5 flex items-start bg-red-950/40 border border-red-500/30 text-red-200 px-4 py-3 rounded-2xl text-sm gap-3 animate-headShake">
+                <i class="fa-solid fa-circle-exclamation mt-0.5 text-red-400"></i>
+                <span th:text="${error}">Username atau password salah!</span>
+            </div>
+            
+            <div th:if="${success}" class="mb-5 flex items-start bg-green-950/40 border border-green-500/30 text-green-200 px-4 py-3 rounded-2xl text-sm gap-3">
+                <i class="fa-solid fa-circle-check mt-0.5 text-green-400"></i>
+                <span th:text="${success}">Berhasil!</span>
+            </div>
+
+            <form th:action="@{/login}" method="POST" class="space-y-6">
+                <!-- Username input -->
+                <div class="space-y-2">
+                    <label for="username" class="block text-sm font-medium text-coffee-200">Username</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-coffee-400">
+                            <i class="fa-regular fa-user"></i>
+                        </div>
+                        <input type="text" id="username" name="username" required autocomplete="off"
+                            class="block w-full pl-11 pr-4 py-3.5 bg-coffee-950/60 border border-white/10 rounded-2xl text-white placeholder-coffee-600 focus:outline-none focus:border-coffee-400 focus:ring-1 focus:ring-coffee-400/30 transition duration-300 text-sm"
+                            placeholder="Masukkan username Anda">
+                    </div>
+                </div>
+
+                <!-- Password input -->
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                        <label for="password" class="block text-sm font-medium text-coffee-200">Password</label>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-coffee-400">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <input type="password" id="password" name="password" required
+                            class="block w-full pl-11 pr-4 py-3.5 bg-coffee-950/60 border border-white/10 rounded-2xl text-white placeholder-coffee-600 focus:outline-none focus:border-coffee-400 focus:ring-1 focus:ring-coffee-400/30 transition duration-300 text-sm"
+                            placeholder="Masukkan password Anda">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" 
+                    class="glow-button w-full py-4 px-6 bg-gradient-to-r from-coffee-500 to-coffee-700 hover:from-coffee-400 hover:to-coffee-600 text-coffee-950 font-bold text-base rounded-2xl transition duration-300 flex items-center justify-center gap-2">
+                    <span>Sign In</span>
+                    <i class="fa-solid fa-arrow-right text-sm"></i>
+                </button>
+            </form>
+            
+            <!-- Default Credentials Help Drawer -->
+            <div class="mt-8 pt-6 border-t border-white/5 text-center">
+                <p class="text-xs text-coffee-400/50">Info Login Default (DataSeeder):</p>
+                <div class="flex justify-center gap-4 mt-2 text-xs font-semibold text-coffee-300/70 bg-coffee-950/30 py-2 rounded-xl border border-white/[0.02]">
+                    <span>User: <code class="text-coffee-400">admin</code></span>
+                    <span>Pass: <code class="text-coffee-400">admin123</code></span>
+                </div>
+            </div>
+        </div>
+        
+        <p class="text-center text-xs text-coffee-500/40 mt-8">
+            &copy; 2026 Arabica.co. All rights reserved.
+        </p>
+    </div>
+
+    <!-- Register Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('ServiceWorker registered:', reg))
+                    .catch(err => console.error('ServiceWorker registration failed:', err));
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <circle cx="256" cy="256" r="240" fill="url(#bgGrad)" stroke="#8E704D" stroke-width="12"/>
+  <!-- Coffee bean paths -->
+  <g transform="translate(120, 120)">
+    <!-- Left side of bean -->
+    <path d="M125 15C56 60 20 130 25 180C30 220 70 255 110 255C120 255 125 240 120 215C115 190 125 150 145 120C165 90 160 50 140 30C135 25 130 20 125 15Z" fill="#D5C4A1" />
+    <!-- Right side of bean -->
+    <path d="M147 257C216 212 252 142 247 92C242 52 202 17 162 17C152 17 147 32 152 57C157 82 147 122 127 152C107 182 112 222 132 242C137 247 142 252 147 257Z" fill="#8E704D" />
+    <!-- S-curve division -->
+    <path d="M125 15C130 20 135 25 140 30C160 50 165 90 145 120C125 150 115 190 120 215C125 240 120 255 110 255C120 255 125 252 132 242C112 222 107 182 127 152C147 122 157 82 152 57C147 32 152 17 162 17C142 17 137 25 125 15Z" fill="#5A3D2A" />
+  </g>
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1F100A"/>
+      <stop offset="100%" stop-color="#0C0604"/>
+    </linearGradient>
+  </defs>
+</svg>
