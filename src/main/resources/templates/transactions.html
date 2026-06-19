@@ -137,34 +137,39 @@
           href="/transactions"
           class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-coffee-800/60 to-coffee-950/20 text-coffee-300 rounded-xl border border-white/5 font-semibold transition duration-200"
         >
+          <div class="absolute left-0 top-0 w-1 h-full bg-[#B09874]"></div>
+
           <i class="fa-solid fa-right-left text-coffee-400"></i>
           <span>Transaksi In / Out</span>
         </a>
       </nav>
-
       <div class="p-4 border-t border-white/5 bg-black/20">
-        <div class="flex items-center gap-3 mb-4">
+        <a
+          href="/profile"
+          class="flex items-center gap-3 mb-4 p-2 bg-white/[0.03] hover:bg-white/[0.06] rounded-xl border border-white/5 block transition duration-200"
+        >
           <div
-            class="w-10 h-10 rounded-full bg-coffee-800 flex items-center justify-center border border-white/10 font-bold text-coffee-300"
+            class="w-10 h-10 rounded-full bg-[#8E704D]/30 flex items-center justify-center border border-white/10 font-bold text-[#B09874]"
           >
             <span
-              th:text="${currentUser != null ? #strings.substring(currentUser.fullName, 0, 1) : 'A'}"
-              >A</span
+              th:text="${currentUser != null ? #strings.substring(currentUser.fullName, 0, 1) : 'S'}"
+              >S</span
             >
           </div>
           <div class="overflow-hidden">
             <span
               class="text-xs font-semibold text-white block truncate"
-              th:text="${currentUser != null ? currentUser.fullName : 'Administrator'}"
-              >Admin Gudang</span
+              th:text="${currentUser.fullName}"
+              >Nama Staf</span
             >
             <span
-              class="text-[10px] text-coffee-400/60 font-medium uppercase tracking-wider"
-              th:text="${currentUser != null ? currentUser.role : 'ADMIN'}"
-              >ADMIN</span
+              class="text-[10px] text-[#B09874]/60 font-medium uppercase tracking-wider"
+              th:text="${currentUser.role}"
+              >STAFF</span
             >
           </div>
-        </div>
+        </a>
+
         <a
           href="/logout"
           class="flex items-center justify-center gap-2 w-full py-2.5 bg-red-950/30 hover:bg-red-900/40 text-red-300 border border-red-900/30 rounded-xl text-xs font-semibold transition duration-200"

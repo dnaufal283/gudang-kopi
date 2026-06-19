@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>Rekap Shift Staff - Arabica Warehouse</title>
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0C0604" />
+    <link rel="apple-touch-icon" href="/images/logo.svg" />
+    <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @media print {
@@ -111,6 +115,16 @@
       window.onload = function () {
         setTimeout(() => window.print(), 500);
       };
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/service-worker.js")
+            .then((reg) => console.log("ServiceWorker registered:", reg))
+            .catch((err) =>
+              console.error("ServiceWorker registration failed:", err),
+            );
+        });
+      }
     </script>
   </body>
 </html>

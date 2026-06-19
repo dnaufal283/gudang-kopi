@@ -2,19 +2,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Kelola Supplier - Arabica Warehouse</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kelola Staff - Arabica Warehouse</title>
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#0C0604" />
     <link rel="apple-touch-icon" href="/images/logo.svg" />
     <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <script>
       tailwind.config = {
@@ -169,16 +170,13 @@
           <i class="fa-solid fa-boxes-stacked w-6 text-center"></i>
           <span>Kelola Data Kopi</span>
         </a>
-
         <a
           href="/suppliers"
-          class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#8E704D]/40 to-transparent text-[#B09874] rounded-xl border border-white/5 font-semibold transition relative"
+          class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-white/[0.03] rounded-xl font-medium transition duration-200"
         >
-          <div class="absolute left-0 top-0 w-1 h-full bg-[#B09874]"></div>
           <i class="fa-solid fa-truck-field w-6 text-center"></i>
           <span>Mitra Supplier</span>
         </a>
-
         <a
           href="/reports"
           class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-white/[0.03] rounded-xl font-medium transition duration-200"
@@ -189,17 +187,18 @@
 
         <a
           href="/users"
-          class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-white/[0.03] rounded-xl font-medium transition duration-200"
+          class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#8E704D]/40 to-transparent text-[#B09874] rounded-xl border border-white/5 font-semibold transition relative"
         >
-          <i class="fa-solid fa-users-gear w-6 text-center"></i>
-
+          <div class="absolute left-0 top-0 w-1 h-full bg-[#B09874]"></div>
+          <i class="fa-solid fa-users-gear w-6 text-center text-[#B09874]"></i>
           <span>Kelola Staff</span>
         </a>
       </nav>
+
       <div class="p-4 border-t border-white/5 bg-black/20">
         <a
           href="/profile"
-          class="flex items-center gap-3 mb-4 p-2 bg-white/[0.03] hover:bg-white/[0.06] rounded-xl border border-white/5 block transition duration-200"
+          class="flex items-center gap-3 mb-4 p-2 bg-white/[0.03] rounded-xl border border-white/5 block"
         >
           <div
             class="w-10 h-10 rounded-full bg-[#8E704D]/30 flex items-center justify-center border border-white/10 font-bold text-[#B09874]"
@@ -209,28 +208,23 @@
               >A</span
             >
           </div>
-
           <div class="overflow-hidden">
             <span
               class="text-xs font-semibold text-white block truncate"
-              th:text="${currentUser != null ? currentUser.fullName : 'Administrator Gudang'}"
+              th:text="${currentUser != null ? currentUser.fullName : 'Administrator'}"
               >Admin Gudang</span
             >
-
             <span
-              class="text-[10px] text-[#B09874]/60 font-medium uppercase tracking-wider"
-              th:text="${currentUser != null ? currentUser.role : 'ADMIN'}"
-              >ADMIN</span
+              class="text-[10px] text-[#B09874]/60 font-medium uppercase tracking-wider block"
+              >Profilku</span
             >
           </div>
         </a>
-
         <a
           href="/logout"
           class="flex items-center justify-center gap-2 w-full py-2.5 bg-red-950/30 hover:bg-red-900/40 text-red-300 border border-red-900/30 rounded-xl text-xs font-semibold transition duration-200"
         >
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
-
           <span>Keluar Aplikasi</span>
         </a>
       </div>
@@ -249,32 +243,43 @@
           </button>
           <div>
             <h1 class="text-2xl font-bold text-white tracking-tight">
-              Kelola Data Supplier
+              Manajemen Akun Pengguna
             </h1>
             <p class="text-xs text-[#B09874]/60 font-medium">
-              Tambah dan pantau mitra penyuplai kopi.
+              Buat akun baru atau cabut akses pegawai gudang.
             </p>
           </div>
         </div>
       </header>
+
+      <div
+        th:if="${success}"
+        class="mb-6 p-4 bg-green-950/40 border border-green-900/50 text-green-400 text-xs rounded-xl"
+        th:text="${success}"
+      ></div>
+      <div
+        th:if="${error}"
+        class="mb-6 p-4 bg-red-950/40 border border-red-900/50 text-red-400 text-xs rounded-xl"
+        th:text="${error}"
+      ></div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="glass-card p-6 rounded-3xl h-fit">
           <h3
             class="text-sm font-bold text-white tracking-tight mb-5 border-b border-white/5 pb-4 flex items-center gap-2"
           >
-            <i class="fa-solid fa-plus text-[#B09874]"></i>
-            <span>Tambah Supplier</span>
+            <i class="fa-solid fa-user-plus text-[#B09874]"></i>
+            <span>Daftarkan Akun Baru</span>
           </h3>
-          <form th:action="@{/suppliers}" method="POST" class="space-y-4">
+          <form th:action="@{/users/add}" method="POST" class="space-y-4">
             <div>
               <label
                 class="text-[10px] font-bold text-[#B09874] uppercase tracking-wider block mb-1"
-                >Nama Supplier</label
+                >Nama Lengkap</label
               >
               <input
                 type="text"
-                name="name"
+                name="fullName"
                 required
                 class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-white text-xs focus:border-[#B09874] focus:outline-none transition"
               />
@@ -282,30 +287,46 @@
             <div>
               <label
                 class="text-[10px] font-bold text-[#B09874] uppercase tracking-wider block mb-1"
-                >Kontak / No. HP</label
+                >Username (Login)</label
               >
               <input
                 type="text"
-                name="contact"
+                name="username"
+                required
                 class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-white text-xs focus:border-[#B09874] focus:outline-none transition"
               />
             </div>
             <div>
               <label
                 class="text-[10px] font-bold text-[#B09874] uppercase tracking-wider block mb-1"
-                >Alamat</label
+                >Password</label
               >
-              <textarea
-                name="address"
-                rows="3"
+              <input
+                type="password"
+                name="password"
+                required
                 class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-white text-xs focus:border-[#B09874] focus:outline-none transition"
-              ></textarea>
+              />
+            </div>
+            <div>
+              <label
+                class="text-[10px] font-bold text-[#B09874] uppercase tracking-wider block mb-1"
+                >Hak Akses (Role)</label
+              >
+              <select
+                name="role"
+                required
+                class="w-full bg-black/50 border border-white/10 rounded-xl px-4 py-2.5 text-white text-xs focus:border-[#B09874] focus:outline-none transition"
+              >
+                <option value="STAFF">STAFF (Pencatat Stok)</option>
+                <option value="ADMIN">ADMIN (Manajer Gudang)</option>
+              </select>
             </div>
             <button
               type="submit"
-              class="w-full mt-2 bg-gradient-to-r from-[#8E704D] to-[#B09874] hover:from-[#B09874] hover:to-[#8E704D] text-black font-bold py-2.5 rounded-xl text-xs transition duration-300 shadow-[0_0_15px_rgba(176,152,116,0.2)]"
+              class="w-full mt-2 bg-gradient-to-r from-[#8E704D] to-[#B09874] hover:from-[#B09874] hover:to-[#8E704D] text-black font-bold py-2.5 rounded-xl text-xs transition duration-300 shadow-md"
             >
-              Simpan Data
+              Buat Akun Pegawai
             </button>
           </form>
         </div>
@@ -315,8 +336,8 @@
             <h3
               class="text-sm font-bold text-white tracking-tight flex items-center gap-2"
             >
-              <i class="fa-solid fa-truck-fast text-[#B09874]"></i>
-              <span>Daftar Mitra Terdaftar</span>
+              <i class="fa-solid fa-users text-[#B09874]"></i>
+              <span>Daftar Akun Terdaftar</span>
             </h3>
           </div>
           <div class="overflow-x-auto">
@@ -325,46 +346,67 @@
                 <tr
                   class="border-b border-white/5 bg-white/[0.01] text-[10px] uppercase font-bold text-[#B09874]/80 tracking-wider"
                 >
-                  <th class="p-4 pl-6">Nama</th>
-                  <th class="p-4">Kontak</th>
-                  <th class="p-4">Alamat</th>
+                  <th class="p-4 pl-6">ID</th>
+                  <th class="p-4">Nama Lengkap</th>
+                  <th class="p-4">Username</th>
+                  <th class="p-4 text-center">Role</th>
                   <th class="p-4 pr-6 text-center">Aksi</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-white/5 text-xs">
                 <tr
-                  th:each="s : ${suppliers}"
+                  th:each="user : ${users}"
                   class="hover:bg-white/[0.01] transition duration-200"
                 >
-                  <td class="p-4 pl-6 font-bold text-white" th:text="${s.name}">
-                    Nama
+                  <td
+                    class="p-4 pl-6 font-mono text-gray-500 text-[10px]"
+                    th:text="'#' + ${user.id}"
+                  >
+                    #1
                   </td>
                   <td
-                    class="p-4 font-mono text-gray-400"
-                    th:text="${s.contact}"
+                    class="p-4 font-bold text-white"
+                    th:text="${user.fullName}"
                   >
-                    08...
+                    Nama Pegawai
                   </td>
-                  <td class="p-4 text-gray-400" th:text="${s.address}">
-                    Alamat
+                  <td
+                    class="p-4 font-mono text-coffee-400"
+                    th:text="${user.username}"
+                  >
+                    username
+                  </td>
+                  <td class="p-4 text-center">
+                    <span
+                      th:classappend="${user.role == 'ADMIN'} ? 'bg-amber-950/60 text-amber-400 border-amber-900/30' : 'bg-blue-950/60 text-blue-400 border-blue-900/30'"
+                      class="border px-2 py-0.5 rounded-full text-[9px] font-bold uppercase inline-block"
+                      th:text="${user.role}"
+                      >STAFF</span
+                    >
                   </td>
                   <td class="p-4 pr-6 text-center">
-                    <a
-                      th:if="${s.contact != null && !s.contact.isEmpty()}"
-                      th:href="'https://wa.me/' + ${#strings.startsWith(s.contact, '0') ? '62' + #strings.substring(s.contact, 1) : s.contact} + '?text=Halo%20mitra%20' + ${s.name} + ',%20kami%20dari%20Admin%20Gudang%20Arabica.CO%20ingin%20melakukan%20restok%20kopi.'"
-                      target="_blank"
-                      class="inline-flex items-center justify-center gap-2 bg-green-950/40 hover:bg-green-900/60 text-green-400 border border-green-900/50 px-3 py-1.5 rounded-lg text-[10px] font-bold transition duration-200"
+                    <form
+                      th:if="${user.id != currentUser.id}"
+                      th:action="@{/users/delete/{id}(id=${user.id})}"
+                      method="POST"
+                      onsubmit="
+                        return confirm('Yakin ingin mencabut akses akun ini?');
+                      "
+                      class="inline"
                     >
-                      <i class="fa-brands fa-whatsapp text-sm"></i> Order Restok
-                    </a>
-                  </td>
-                </tr>
-                <tr th:if="${suppliers.isEmpty()}">
-                  <td colspan="4" class="p-10 text-center text-gray-500">
-                    <i
-                      class="fa-regular fa-folder-open text-2xl mb-3 block"
-                    ></i>
-                    Belum ada mitra supplier terdaftar.
+                      <button
+                        type="submit"
+                        class="w-8 h-8 rounded-lg bg-red-950/40 text-red-400 hover:bg-red-900/60 transition flex items-center justify-center border border-red-900/50"
+                        title="Hapus Akun"
+                      >
+                        <i class="fa-solid fa-trash-can"></i>
+                      </button>
+                    </form>
+                    <span
+                      th:if="${user.id == currentUser.id}"
+                      class="text-[10px] text-gray-500 italic"
+                      >Sedang digunakan</span
+                    >
                   </td>
                 </tr>
               </tbody>
@@ -376,8 +418,9 @@
 
     <script>
       function toggleSidebar() {
-        const sidebar = document.getElementById("sidebar");
-        sidebar.classList.toggle("-translate-x-full");
+        document
+          .getElementById("sidebar")
+          .classList.toggle("-translate-x-full");
       }
       if ("serviceWorker" in navigator) {
         window.addEventListener("load", () => {
