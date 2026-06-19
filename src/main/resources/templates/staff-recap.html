@@ -1,0 +1,116 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Rekap Shift Staff - Arabica Warehouse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @media print {
+        body {
+          background: white !important;
+          color: black !important;
+        }
+        .no-print {
+          display: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-100 text-gray-900 p-8 font-sans flex justify-center min-h-screen"
+  >
+    <div
+      class="w-full max-w-4xl bg-white p-10 rounded-xl shadow-md border border-gray-200"
+    >
+      <div
+        class="border-b-2 border-gray-800 pb-6 mb-6 flex justify-between items-end"
+      >
+        <div>
+          <h1 class="text-3xl font-extrabold tracking-tight">ARABICA.CO</h1>
+          <p class="text-sm text-gray-500 font-semibold mt-1">
+            Laporan Rekapitulasi Shift Staff Gudang
+          </p>
+        </div>
+        <div class="text-right text-sm">
+          <p>
+            <strong>Dicetak oleh:</strong>
+            <span class="uppercase" th:text="${staffName}">Staff</span>
+          </p>
+          <p>
+            <strong>Waktu Cetak:</strong>
+            <span
+              th:text="${#temporals.format(printDate, 'dd MMM yyyy - HH:mm')}"
+              >Waktu</span
+            >
+          </p>
+        </div>
+      </div>
+
+      <table class="w-full text-sm text-left mb-10 border-collapse">
+        <thead>
+          <tr
+            class="bg-gray-100 border-b-2 border-gray-800 font-bold uppercase text-xs"
+          >
+            <th class="py-3 px-2">Waktu</th>
+            <th class="py-3 px-2">Produk</th>
+            <th class="py-3 px-2 text-center">Tipe</th>
+            <th class="py-3 px-2 text-center">Qty (Kg)</th>
+            <th class="py-3 px-2">Catatan</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-300">
+          <tr th:each="tx : ${transactions}">
+            <td
+              class="py-3 px-2 font-mono text-xs"
+              th:text="${#temporals.format(tx.transactionDate, 'HH:mm')}"
+            >
+              14:00
+            </td>
+            <td class="py-3 px-2 font-bold" th:text="${tx.product.name}">
+              Kopi Gayo
+            </td>
+            <td class="py-3 px-2 text-center font-bold">
+              <span th:if="${tx.type == 'IN'}" class="text-green-600">IN</span>
+              <span th:if="${tx.type == 'OUT'}" class="text-red-600">OUT</span>
+            </td>
+            <td
+              class="py-3 px-2 text-center font-mono font-bold"
+              th:text="${tx.quantity}"
+            >
+              10
+            </td>
+            <td class="py-3 px-2 text-xs" th:text="${tx.notes}">-</td>
+          </tr>
+          <tr th:if="${transactions.isEmpty()}">
+            <td colspan="5" class="py-6 text-center text-gray-500 italic">
+              Belum ada transaksi pada shift ini.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="flex justify-end mt-12 text-center text-sm">
+        <div class="w-48">
+          <p class="mb-16">Mengetahui,<br /><strong>Staff Bertugas</strong></p>
+          <p class="border-b border-gray-800 mb-1"></p>
+          <p class="font-bold uppercase" th:text="${staffName}">Nama Staff</p>
+        </div>
+      </div>
+
+      <div class="mt-8 text-center no-print">
+        <button
+          onclick="window.print()"
+          class="bg-black text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-800 transition"
+        >
+          Cetak Laporan Sekarang
+        </button>
+      </div>
+    </div>
+
+    <script>
+      window.onload = function () {
+        setTimeout(() => window.print(), 500);
+      };
+    </script>
+  </body>
+</html>
