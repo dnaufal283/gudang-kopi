@@ -3,6 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>Kelola Data Kopi - Arabica Warehouse</title>
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0C0604" />
+    <link rel="apple-touch-icon" href="/images/logo.svg" />
+    <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
@@ -183,10 +187,21 @@
           <i class="fa-solid fa-file-signature w-6 text-center"></i>
           <span>Laporan Mutasi</span>
         </a>
-      </nav>
 
+        <a
+          href="/users"
+          class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-white/[0.03] rounded-xl font-medium transition duration-200"
+        >
+          <i class="fa-solid fa-users-gear w-6 text-center"></i>
+
+          <span>Kelola Staff</span>
+        </a>
+      </nav>
       <div class="p-4 border-t border-white/5 bg-black/20">
-        <div class="flex items-center gap-3 mb-4">
+        <a
+          href="/profile"
+          class="flex items-center gap-3 mb-4 p-2 bg-white/[0.03] hover:bg-white/[0.06] rounded-xl border border-white/5 block transition duration-200"
+        >
           <div
             class="w-10 h-10 rounded-full bg-[#8E704D]/30 flex items-center justify-center border border-white/10 font-bold text-[#B09874]"
           >
@@ -195,33 +210,44 @@
               >A</span
             >
           </div>
+
           <div class="overflow-hidden">
             <span
               class="text-xs font-semibold text-white block truncate"
               th:text="${currentUser != null ? currentUser.fullName : 'Administrator'}"
               >Admin Gudang</span
             >
+
             <span
               class="text-[10px] text-[#B09874]/60 font-medium uppercase tracking-wider"
               th:text="${currentUser != null ? currentUser.role : 'ADMIN'}"
               >ADMIN</span
             >
           </div>
-        </div>
+        </a>
+
         <a
           href="/logout"
           class="flex items-center justify-center gap-2 w-full py-2.5 bg-red-950/30 hover:bg-red-900/40 text-red-300 border border-red-900/30 rounded-xl text-xs font-semibold transition duration-200"
         >
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
           <span>Keluar Aplikasi</span>
         </a>
       </div>
     </aside>
     <main class="flex-1 min-w-0 p-8 md:p-10 overflow-y-auto">
-      <header
+       <header
         class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10"
       >
-        <div>
+        <div class="flex items-center gap-3">
+          <button
+            onclick="toggleSidebar()"
+            class="lg:hidden w-10 h-10 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-center text-[#B09874] hover:bg-white/[0.05] transition duration-200"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div>
           <h1 class="text-2xl font-bold text-white tracking-tight">
             Manajemen Kopi Arabika
           </h1>
@@ -462,6 +488,22 @@
 
       function closeModal() {
         document.getElementById("productModal").classList.add("hidden");
+      }
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        sidebar.classList.toggle("-translate-x-full");
+        overlay.classList.toggle("hidden");
+      }
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/service-worker.js")
+            .then((reg) => console.log("ServiceWorker registered:", reg))
+            .catch((err) =>
+              console.error("ServiceWorker registration failed:", err),
+            );
+        });
       }
     </script>
   </body>

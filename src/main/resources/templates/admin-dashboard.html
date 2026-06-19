@@ -21,33 +21,33 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <!-- Chart.js for Beautiful Graphs -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            fontFamily: {
-              sans: ["Plus Jakarta Sans", "sans-serif"],
-            },
-            colors: {
-              coffee: {
-                50: "#FDFBF7",
-                100: "#F3EFE9",
-                200: "#E6DEC9",
-                300: "#D5C4A1",
-                400: "#B09874", // Warna utama (Emas/Kopi)
-                500: "#8E704D",
-                600: "#735238",
-                700: "#5A3D2A",
-                800: "#3D2518",
-                900: "#1F100A",
-                950: "#0C0604",
+    <script src="https://cdn.jsdelivr.net/npm/chart.js">
+      </script/>
+          <script>
+            tailwind.config = {
+              theme: {
+                extend: {
+                  fontFamily: {
+                    sans: ["Plus Jakarta Sans", "sans-serif"],
+                  },
+                  colors: {
+                    coffee: {
+                      50: "#FDFBF7",
+                      100: "#F3EFE9",
+                      200: "#E6DEC9",
+                      300: "#D5C4A1",
+                      400: "#B09874", // Warna utama (Emas/Kopi)
+                      500: "#8E704D",
+                      600: "#735238",
+                      700: "#5A3D2A",
+                      800: "#3D2518",
+                      900: "#1F100A",
+                      950: "#0C0604",
+                    },
+                  },
+                },
               },
-            },
-          },
-        },
-      };
+            };
     </script>
     <style>
       body {
@@ -74,7 +74,41 @@
         background: rgba(19, 10, 6, 0.95);
         border-right: 1px solid rgba(255, 255, 255, 0.05);
       }
-      /* Custom scrollbar for modern looks */
+
+      @media print {
+        body {
+          background: white !important;
+          background-image: none !important;
+          color: black !important;
+        }
+        aside,
+        header,
+        form,
+        .no-print {
+          display: none !important;
+        }
+        main {
+          padding: 0 !important;
+          margin: 0 !important;
+        }
+        .print-full {
+          width: 100% !important;
+          background: white !important;
+          border: none !important;
+          box-shadow: none !important;
+          color: black !important;
+        }
+        .border-print {
+          border-color: #e5e7eb !important;
+        }
+        .text-print-black {
+          color: black !important;
+        }
+        .bg-print-gray {
+          background-color: #f3f4f6 !important;
+        }
+      }
+
       ::-webkit-scrollbar {
         width: 6px;
         height: 6px;
@@ -92,16 +126,8 @@
     </style>
   </head>
   <body
-    class="text-coffee-100 min-h-screen flex font-sans overflow-x-hidden relative"
+    class="flex min-h-screen text-gray-200 font-sans selection:bg-[#B09874] selection:text-white"
   >
-    <!-- Sidebar mobile overlay -->
-    <div
-      id="sidebarOverlay"
-      onclick="toggleSidebar()"
-      class="hidden fixed inset-0 bg-black/60 z-30 transition-opacity duration-300 lg:hidden"
-    ></div>
-
-    <!-- SIDEBAR -->
     <aside
       id="sidebar"
       class="w-64 glass-sidebar flex flex-col shrink-0 min-h-screen fixed lg:sticky top-0 left-0 z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300"
@@ -121,7 +147,7 @@
             >
             <span
               class="text-[10px] text-[#B09874]/50 block font-semibold -mt-1"
-              >WAREHOUSE</span
+              >ADMIN PANEL</span
             >
           </div>
         </a>
@@ -139,11 +165,10 @@
           class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#8E704D]/40 to-transparent text-[#B09874] rounded-xl border border-white/5 font-semibold transition relative"
         >
           <div class="absolute left-0 top-0 w-1 h-full bg-[#B09874]"></div>
-          <i class="fa-solid fa-chart-pie w-6 text-center"></i>
+          <i class="fa-solid fa-truck-field w-6 text-center"></i>
 
           <span class="whitespace-nowrap">Dashboard Overview</span>
         </a>
-
         <a
           href="/products"
           class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-white/[0.03] rounded-xl font-medium transition duration-200"
@@ -156,7 +181,8 @@
           href="/suppliers"
           class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-white/[0.03] rounded-xl font-medium transition duration-200"
         >
-          <i class="fa-solid fa-truck-field w-6 text-center"></i>
+          <div class="absolute left-0 top-0 w-1 h-full bg-[#B09874]"></div>
+          <i class="fa-solid fa-chart-pie w-6 text-center"></i>
           <span>Mitra Supplier</span>
         </a>
 
@@ -167,10 +193,21 @@
           <i class="fa-solid fa-file-signature w-6 text-center"></i>
           <span>Laporan Mutasi</span>
         </a>
-      </nav>
 
+        <a
+          href="/users"
+          class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-white/[0.03] rounded-xl font-medium transition duration-200"
+        >
+          <i class="fa-solid fa-users-gear w-6 text-center"></i>
+
+          <span>Kelola Staff</span>
+        </a>
+      </nav>
       <div class="p-4 border-t border-white/5 bg-black/20">
-        <div class="flex items-center gap-3 mb-4">
+        <a
+          href="/profile"
+          class="flex items-center gap-3 mb-4 p-2 bg-white/[0.03] hover:bg-white/[0.06] rounded-xl border border-white/5 block transition duration-200"
+        >
           <div
             class="w-10 h-10 rounded-full bg-[#8E704D]/30 flex items-center justify-center border border-white/10 font-bold text-[#B09874]"
           >
@@ -179,33 +216,35 @@
               >A</span
             >
           </div>
+
           <div class="overflow-hidden">
             <span
               class="text-xs font-semibold text-white block truncate"
-              th:text="${currentUser != null ? currentUser.fullName : 'Administrator'}"
+              th:text="${currentUser != null ? currentUser.fullName : 'Administrator Gudang'}"
               >Admin Gudang</span
             >
+
             <span
               class="text-[10px] text-[#B09874]/60 font-medium uppercase tracking-wider"
               th:text="${currentUser != null ? currentUser.role : 'ADMIN'}"
               >ADMIN</span
             >
           </div>
-        </div>
+        </a>
+
         <a
           href="/logout"
           class="flex items-center justify-center gap-2 w-full py-2.5 bg-red-950/30 hover:bg-red-900/40 text-red-300 border border-red-900/30 rounded-xl text-xs font-semibold transition duration-200"
         >
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
+
           <span>Keluar Aplikasi</span>
         </a>
       </div>
     </aside>
     <!-- MAIN CONTENT -->
     <main class="flex-1 min-w-0 p-8 md:p-10 overflow-y-auto">
-      <header
-        class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10"
-      >
+      <header class="flex flex-row items-center justify-between gap-4 mb-10">
         <div class="flex items-center gap-3">
           <button
             onclick="toggleSidebar()"

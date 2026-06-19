@@ -2,7 +2,7 @@ const CACHE_NAME = 'arabica-cache-v1';
 const ASSETS_TO_CACHE = [
     '/login',
     '/manifest.json',
-    '/images/logo.svg',
+    '/images/logo.png',
     'https://cdn.tailwindcss.com',
     'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap',
     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
@@ -36,7 +36,7 @@ self.addEventListener('activate', event => {
 // Fetch Strategy: Network First for transactional pages/APIs, Cache First for static resources
 self.addEventListener('fetch', event => {
     const url = new URL(event.request.url);
-    
+
     // Check if the request is for HTML navigation pages or stats APIs
     if (event.request.mode === 'navigate' || url.pathname.startsWith('/api/')) {
         event.respondWith(
@@ -54,7 +54,7 @@ self.addEventListener('fetch', event => {
                     if (cachedResponse) {
                         return cachedResponse;
                     }
-                    
+
                     return fetch(event.request).then(response => {
                         // Cache the newly fetched file if it's a successful response
                         if (response && response.status === 200 && response.type === 'basic') {
@@ -66,8 +66,8 @@ self.addEventListener('fetch', event => {
                         return response;
                     }).catch(() => {
                         // Return logo or empty response as offline safety
-                        if (url.pathname.endsWith('.svg')) {
-                            return caches.match('/images/logo.svg');
+                        if (url.pathname.endsWith('.png')) {
+                            return caches.match('/images/logo.png');
                         }
                     });
                 })
