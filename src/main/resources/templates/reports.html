@@ -1,361 +1,571 @@
-<!DOCTYPE html>
+<!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Laporan - Arabica Warehouse Management</title>
     <!-- PWA Settings -->
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#0C0604">
-    <link rel="apple-touch-icon" href="/images/logo.svg">
-    <link rel="icon" type="image/svg+xml" href="/images/logo.svg">
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0C0604" />
+    <link rel="apple-touch-icon" href="/images/logo.svg" />
+    <link rel="icon" type="image/svg+xml" href="/images/logo.svg" />
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
     <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    },
-                    colors: {
-                        coffee: {
-                            50: '#FDFBF7',
-                            100: '#F3EFE9',
-                            200: '#E6DEC9',
-                            300: '#D5C4A1',
-                            400: '#B09874',
-                            500: '#8E704D',
-                            600: '#735238',
-                            700: '#5A3D2A',
-                            800: '#3D2518',
-                            900: '#1F100A',
-                            950: '#0C0604',
-                        }
-                    }
-                }
-            }
-        }
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+     <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Plus Jakarta Sans", "sans-serif"],
+            },
+            colors: {
+              coffee: {
+                50: "#FDFBF7",
+                100: "#F3EFE9",
+                200: "#E6DEC9",
+                300: "#D5C4A1",
+                400: "#B09874", // Warna utama (Emas/Kopi)
+                500: "#8E704D",
+                600: "#735238",
+                700: "#5A3D2A",
+                800: "#3D2518",
+                900: "#1F100A",
+                950: "#0C0604",
+              },
+            },
+          },
+        },
+      };
     </script>
     <style>
-        body {
-            background-color: #0c0604;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(142, 112, 77, 0.08) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(31, 16, 10, 0.2) 0px, transparent 50%);
-        }
-        .glass-card {
-            background: rgba(31, 16, 10, 0.45);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .glass-sidebar {
-            background: rgba(19, 10, 6, 0.95);
-            border-right: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        
-        @media print {
-            body {
-                background: white !important;
-                background-image: none !important;
-                color: black !important;
-            }
-            aside, header, form, .no-print {
-                display: none !important;
-            }
-            main {
-                padding: 0 !important;
-                margin: 0 !important;
-            }
-            .print-full {
-                width: 100% !important;
-                background: white !important;
-                border: none !important;
-                box-shadow: none !important;
-                color: black !important;
-            }
-            .border-print {
-                border-color: #e5e7eb !important;
-            }
-            .text-print-black {
-                color: black !important;
-            }
-            .bg-print-gray {
-                background-color: #f3f4f6 !important;
-            }
-        }
-        
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(31, 16, 10, 0.3);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(142, 112, 77, 0.3);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(142, 112, 77, 0.5);
-        }
+      body {
+        background-color: #0c0604;
+        background-image:
+          radial-gradient(
+            at 0% 0%,
+            rgba(142, 112, 77, 0.08) 0px,
+            transparent 50%
+          ),
+          radial-gradient(
+            at 100% 100%,
+            rgba(31, 16, 10, 0.2) 0px,
+            transparent 50%
+          );
+      }
+      .glass-card {
+        background: rgba(31, 16, 10, 0.45);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .glass-sidebar {
+        background: rgba(19, 10, 6, 0.95);
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      /* Custom scrollbar for modern looks */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(31, 16, 10, 0.3);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(142, 112, 77, 0.3);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(142, 112, 77, 0.5);
+      }
     </style>
-</head>
-<body class="text-coffee-100 min-h-screen flex font-sans overflow-x-hidden relative">
-
+  </head>
+  <body
+    class="text-coffee-100 min-h-screen flex font-sans overflow-x-hidden relative"
+  >
     <!-- Sidebar mobile overlay -->
-    <div id="sidebarOverlay" onclick="toggleSidebar()" class="hidden fixed inset-0 bg-black/60 z-30 transition-opacity duration-300 lg:hidden"></div>
+    <div
+      id="sidebarOverlay"
+      onclick="toggleSidebar()"
+      class="hidden fixed inset-0 bg-black/60 z-30 transition-opacity duration-300 lg:hidden"
+    ></div>
+    </head>
+  <body
+    class="text-coffee-100 min-h-screen flex font-sans overflow-x-hidden relative"
+  >
+    <!-- Sidebar mobile overlay -->
+    <div
+      id="sidebarOverlay"
+      onclick="toggleSidebar()"
+      class="hidden fixed inset-0 bg-black/60 z-30 transition-opacity duration-300 lg:hidden"
+    ></div>
 
     <!-- SIDEBAR -->
-    <aside id="sidebar" class="w-64 glass-sidebar flex flex-col shrink-0 min-h-screen fixed lg:sticky top-0 left-0 z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300">
-        <div class="p-6 border-b border-white/5 flex items-center justify-between">
-            <a href="/" class="flex items-center gap-3">
-                <div class="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-coffee-800 to-coffee-500 border border-coffee-400/20 shadow-md">
-                    <i class="fa-solid fa-mug-hot text-coffee-100"></i>
-                </div>
-                <div>
-                    <span class="text-lg font-extrabold tracking-tight text-white block">ARABICA<span class="text-coffee-400">.CO</span></span>
-                    <span class="text-[10px] text-coffee-400/50 block font-semibold -mt-1">WAREHOUSE</span>
-                </div>
-            </a>
-            <!-- Close button for mobile -->
-            <button onclick="toggleSidebar()" class="lg:hidden text-coffee-400 hover:text-white transition-colors duration-200">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
-        </div>
+    <aside
+      id="sidebar"
+      class="w-64 glass-sidebar flex flex-col shrink-0 min-h-screen fixed lg:sticky top-0 left-0 z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 shadow-[4px_0_24px_rgba(0,0,0,0.2)]"
+    >
+      <div
+        class="p-6 border-b border-white/5 flex items-center justify-between"
+      >
+        <a href="/" class="flex items-center gap-3">
+          <div
+            class="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-[#8E704D] to-[#B09874] border border-[#B09874]/20 shadow-md"
+          >
+            <i class="fa-solid fa-mug-hot text-white"></i>
+          </div>
+          <div>
+            <span class="text-lg font-extrabold tracking-tight text-white block"
+              >ARABICA<span class="text-[#B09874]">.CO</span></span
+            >
+            <span
+              class="text-[10px] text-[#B09874]/50 block font-semibold -mt-1"
+              >ADMIN PANEL</span
+            >
+          </div>
+        </a>
+        <button
+          onclick="toggleSidebar()"
+          class="lg:hidden text-[#B09874] hover:text-white transition-colors duration-200"
+        >
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
 
-        <nav class="flex-1 px-4 py-6 space-y-2">
-            <a href="/" class="flex items-center gap-3 px-4 py-3 hover:bg-white/[0.03] text-coffee-400 hover:text-coffee-100 rounded-xl font-medium transition duration-200">
-                <i class="fa-solid fa-chart-pie"></i>
-                <span>Dashboard Overview</span>
-            </a>
-            <a href="/transactions" class="flex items-center gap-3 px-4 py-3 hover:bg-white/[0.03] text-coffee-400 hover:text-coffee-100 rounded-xl font-medium transition duration-200">
-                <i class="fa-solid fa-right-left"></i>
-                <span>Transaksi In / Out</span>
-            </a>
-            <a href="/reports" class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-coffee-800/60 to-coffee-950/20 text-coffee-300 rounded-xl border border-white/5 font-semibold transition duration-200">
-                <i class="fa-solid fa-file-invoice text-coffee-400"></i>
-                <span>Laporan & Filter</span>
-            </a>
-        </nav>
+      <nav class="flex-1 px-4 py-6 space-y-2">
+        <a
+          href="/"
+          class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-white/[0.03] rounded-xl font-medium transition duration-200"
+        >
+          <div class="absolute left-0 top-0 w-1 h-full bg-[#B09874]"></div>
+          <i class="fa-solid fa-chart-pie w-6 text-center"></i>
 
-        <div class="p-4 border-t border-white/5 bg-black/20">
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-10 h-10 rounded-full bg-coffee-800 flex items-center justify-center border border-white/10 font-bold text-coffee-300">
-                    <span th:text="${currentUser != null ? #strings.substring(currentUser.fullName, 0, 1) : 'A'}">A</span>
-                </div>
-                <div class="overflow-hidden">
-                    <span class="text-xs font-semibold text-white block truncate" th:text="${currentUser != null ? currentUser.fullName : 'Administrator'}">Admin Gudang</span>
-                    <span class="text-[10px] text-coffee-400/60 font-medium uppercase tracking-wider" th:text="${currentUser != null ? currentUser.role : 'ADMIN'}">ADMIN</span>
-                </div>
-            </div>
-            <a href="/logout" class="flex items-center justify-center gap-2 w-full py-2.5 bg-red-950/30 hover:bg-red-900/40 text-red-300 border border-red-900/30 rounded-xl text-xs font-semibold transition duration-200">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                <span>Keluar Aplikasi</span>
-            </a>
+          <span class="whitespace-nowrap">Dashboard Overview</span>
+        </a>
+        <a
+          href="/products"
+          class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-white/[0.03] rounded-xl font-medium transition duration-200"
+        >
+          <i class="fa-solid fa-boxes-stacked w-6 text-center"></i>
+          <span>Kelola Data Kopi</span>
+        </a>
+        <a
+          href="/suppliers"
+          class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-white/[0.03] rounded-xl font-medium transition duration-200"
+        >
+          <i class="fa-solid fa-truck-field w-6 text-center"></i>
+          <span>Mitra Supplier</span>
+        </a>
+
+        <a
+          href="/reports"
+          class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-[#8E704D]/40 to-transparent text-[#B09874] rounded-xl border border-white/5 font-semibold transition relative"
+        >
+          <div class="absolute left-0 top-0 w-1 h-full bg-[#B09874]"></div>
+          <i
+            class="fa-solid fa-file-signature w-6 text-center text-[#B09874]"
+          ></i>
+          <span>Laporan Mutasi</span>
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-white/5 bg-black/20">
+        <div class="flex items-center gap-3 mb-4">
+          <div
+            class="w-10 h-10 rounded-full bg-[#8E704D]/30 flex items-center justify-center border border-white/10 font-bold text-[#B09874]"
+          >
+            <span
+              th:text="${currentUser != null ? #strings.substring(currentUser.fullName, 0, 1) : 'A'}"
+              >A</span
+            >
+          </div>
+          <div class="overflow-hidden">
+            <span
+              class="text-xs font-semibold text-white block truncate"
+              th:text="${currentUser != null ? currentUser.fullName : 'Administrator'}"
+              >Admin Gudang</span
+            >
+            <span
+              class="text-[10px] text-[#B09874]/60 font-medium uppercase tracking-wider"
+              th:text="${currentUser != null ? currentUser.role : 'ADMIN'}"
+              >ADMIN</span
+            >
+          </div>
         </div>
+        <a
+          href="/logout"
+          class="flex items-center justify-center gap-2 w-full py-2.5 bg-red-950/30 hover:bg-red-900/40 text-red-300 border border-red-900/30 rounded-xl text-xs font-semibold transition duration-200"
+        >
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span>Keluar Aplikasi</span>
+        </a>
+      </div>
     </aside>
-
     <!-- MAIN CONTENT -->
     <main class="flex-1 min-w-0 p-8 md:p-10 overflow-y-auto">
-        <header class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div class="flex items-center gap-3">
-                <!-- Burger menu button -->
-                <button onclick="toggleSidebar()" class="no-print lg:hidden w-10 h-10 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-center text-coffee-300 hover:bg-white/[0.05] transition duration-200">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <div>
-                    <h1 class="text-2xl font-bold text-white tracking-tight">Laporan Rekapitulasi Stok Kopi</h1>
-                    <p class="text-xs text-coffee-400/60 font-medium">Filter history transaksi, agregasikan total masuk/keluar, dan cetak laporan resmi.</p>
-                </div>
-            </div>
-            
-            <button onclick="window.print()" class="no-print bg-gradient-to-r from-coffee-500 to-coffee-700 hover:from-coffee-400 hover:to-coffee-600 text-coffee-950 font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 shadow-md transition duration-200">
-                <i class="fa-solid fa-print"></i>
-                <span>Cetak Rekap Laporan</span>
-            </button>
-        </header>
-
-        <!-- PRINT HEADER (Hanya muncul saat cetak kertas/PDF) -->
-        <div class="hidden print:block mb-8 pb-4 border-b border-gray-200">
-            <div class="flex justify-between items-center">
-                <div>
-                    <h2 class="text-xl font-bold text-black">ARABICA.CO WAREHOUSE</h2>
-                    <p class="text-[10px] text-gray-500">Laporan Resmi Rekapitulasi Stok Gudang Kopi</p>
-                </div>
-                <div class="text-right text-[10px] text-gray-500">
-                    <p>Dicetak Pada: <span th:text="${#temporals.format(#temporals.createNow(), 'dd MMMM yyyy HH:mm')}">06 Juni 2026</span></p>
-                    <p>Status: Laporan Terfilter</p>
-                </div>
-            </div>
+      <header
+        class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
+      >
+        <div class="flex items-center gap-3">
+          <!-- Burger menu button -->
+          <button
+            onclick="toggleSidebar()"
+            class="no-print lg:hidden w-10 h-10 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-center text-coffee-300 hover:bg-white/[0.05] transition duration-200"
+          >
+            <i class="fa-solid fa-bars"></i>
+          </button>
+          <div>
+            <h1 class="text-2xl font-bold text-white tracking-tight">
+              Laporan Rekapitulasi Stok Kopi
+            </h1>
+            <p class="text-xs text-coffee-400/60 font-medium">
+              Filter history transaksi, agregasikan total masuk/keluar, dan
+              cetak laporan resmi.
+            </p>
+          </div>
         </div>
 
-        <!-- GLASSMORPHIC FILTER PANEL -->
-        <form th:action="@{/reports}" method="GET" class="glass-card p-6 rounded-3xl mb-8 space-y-4 border border-white/5 no-print">
-            <h3 class="text-xs font-bold text-white tracking-tight uppercase border-b border-white/5 pb-2 mb-3">Filter Pencarian Laporan</h3>
-            
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <!-- Select Product -->
-                <div class="space-y-1">
-                    <label for="productId" class="text-[10px] font-bold text-coffee-300">Varian Kopi</label>
-                    <select id="productId" name="productId"
-                        class="block w-full px-3 py-2 bg-coffee-950/60 border border-white/10 rounded-xl text-xs text-white placeholder-coffee-600 focus:outline-none focus:border-coffee-400 focus:ring-1 focus:ring-coffee-400/30 transition duration-300">
-                        <option value="">-- Semua Kopi --</option>
-                        <option th:each="p : ${products}" th:value="${p.id}" 
-                            th:text="${p.name}" th:selected="${p.id == selectedProductId}"></option>
-                    </select>
-                </div>
+        <button
+          onclick="window.print()"
+          class="no-print bg-gradient-to-r from-coffee-500 to-coffee-700 hover:from-coffee-400 hover:to-coffee-600 text-coffee-950 font-bold text-xs px-4 py-2.5 rounded-xl flex items-center gap-2 shadow-md transition duration-200"
+        >
+          <i class="fa-solid fa-print"></i>
+          <span>Cetak Rekap Laporan</span>
+        </button>
+      </header>
 
-                <!-- Select Transaction Type -->
-                <div class="space-y-1">
-                    <label for="type" class="text-[10px] font-bold text-coffee-300">Tipe Transaksi</label>
-                    <select id="type" name="type"
-                        class="block w-full px-3 py-2 bg-coffee-950/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-coffee-400 focus:ring-1 focus:ring-coffee-400/30 transition duration-300">
-                        <option value="ALL" th:selected="${'ALL' == selectedType}">Semua Tipe</option>
-                        <option value="IN" th:selected="${'IN' == selectedType}">Masuk (IN)</option>
-                        <option value="OUT" th:selected="${'OUT' == selectedType}">Keluar (OUT)</option>
-                    </select>
-                </div>
-
-                <!-- Start Date -->
-                <div class="space-y-1">
-                    <label for="startDate" class="text-[10px] font-bold text-coffee-300">Tanggal Mulai</label>
-                    <input type="date" id="startDate" name="startDate" th:value="${selectedStartDate}"
-                        class="block w-full px-3 py-2 bg-coffee-950/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-coffee-400 focus:ring-1 focus:ring-coffee-400/30 transition duration-300">
-                </div>
-
-                <!-- End Date -->
-                <div class="space-y-1">
-                    <label for="endDate" class="text-[10px] font-bold text-coffee-300">Tanggal Selesai</label>
-                    <input type="date" id="endDate" name="endDate" th:value="${selectedEndDate}"
-                        class="block w-full px-3 py-2 bg-coffee-950/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-coffee-400 focus:ring-1 focus:ring-coffee-400/30 transition duration-300">
-                </div>
-            </div>
-
-            <div class="flex justify-end gap-3 pt-2">
-                <a href="/reports" class="px-4 py-2 bg-coffee-900/40 hover:bg-coffee-900/80 border border-white/5 rounded-xl text-xs font-bold transition">Reset Filter</a>
-                <button type="submit" class="px-5 py-2 bg-gradient-to-r from-coffee-500 to-coffee-700 hover:from-coffee-400 hover:to-coffee-600 text-coffee-950 font-bold text-xs rounded-xl shadow-md transition">Terapkan Filter</button>
-            </div>
-        </form>
-
-        <!-- AGGREGATION METRIC CARDS -->
-        <section class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8 print-full">
-            <!-- Total In -->
-            <div class="glass-card p-5 rounded-3xl relative overflow-hidden flex items-center justify-between border-print text-print-black">
-                <div>
-                    <span class="text-[9px] text-coffee-400/60 uppercase tracking-widest font-bold block mb-1">Total Stok Masuk</span>
-                    <span class="text-2xl font-extrabold text-green-400 print:text-green-600" th:text="${totalIn} + ' Kg'">100 Kg</span>
-                </div>
-                <div class="w-10 h-10 rounded-xl bg-green-950/20 border border-green-900/20 flex items-center justify-center text-green-400 text-sm no-print">
-                    <i class="fa-solid fa-arrow-turn-down"></i>
-                </div>
-            </div>
-
-            <!-- Total Out -->
-            <div class="glass-card p-5 rounded-3xl relative overflow-hidden flex items-center justify-between border-print text-print-black">
-                <div>
-                    <span class="text-[9px] text-coffee-400/60 uppercase tracking-widest font-bold block mb-1">Total Stok Keluar</span>
-                    <span class="text-2xl font-extrabold text-red-400 print:text-red-600" th:text="${totalOut} + ' Kg'">40 Kg</span>
-                </div>
-                <div class="w-10 h-10 rounded-xl bg-red-950/20 border border-red-900/20 flex items-center justify-center text-red-400 text-sm no-print">
-                    <i class="fa-solid fa-arrow-turn-up"></i>
-                </div>
-            </div>
-
-            <!-- Net Change -->
-            <div class="glass-card p-5 rounded-3xl relative overflow-hidden flex items-center justify-between border-print text-print-black">
-                <div>
-                    <span class="text-[9px] text-coffee-400/60 uppercase tracking-widest font-bold block mb-1">Selisih Bersih (Net)</span>
-                    <span class="text-2xl font-extrabold" th:class="${netChange >= 0} ? 'text-amber-400 print:text-amber-600' : 'text-rose-400 print:text-rose-600'" th:text="${netChange} + ' Kg'">+60 Kg</span>
-                </div>
-                <div class="w-10 h-10 rounded-xl bg-coffee-800/40 border border-white/5 flex items-center justify-center text-coffee-400 text-sm no-print">
-                    <i class="fa-solid fa-scale-balanced"></i>
-                </div>
-            </div>
-        </section>
-
-        <!-- REPORTS RESULT TABLE CARD -->
-        <section class="glass-card rounded-3xl overflow-hidden border border-white/5 print-full">
-            <div class="px-6 py-5 border-b border-white/5 bg-black/10 no-print">
-                <h3 class="text-sm font-bold text-white tracking-tight flex items-center gap-2">
-                    <i class="fa-solid fa-list-check text-coffee-400"></i>
-                    <span>Tabel Hasil Rekap Transaksi</span>
-                </h3>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse border-print text-print-black">
-                    <thead>
-                        <tr class="border-b border-white/5 bg-white/[0.01] bg-print-gray text-[10px] uppercase font-bold text-coffee-400/80 tracking-wider">
-                            <th class="p-4 pl-6 border-print">Tanggal & Waktu</th>
-                            <th class="p-4 border-print">Nama Kopi</th>
-                            <th class="p-4 text-center border-print">Tipe</th>
-                            <th class="p-4 text-center border-print">Jumlah (Kg)</th>
-                            <th class="p-4 border-print">Petugas</th>
-                            <th class="p-4 text-center border-print">No. Invoice</th>
-                            <th class="p-4 pr-6 border-print">Catatan</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-white/5 divide-print text-xs">
-                        <tr th:each="tx : ${transactions}" class="hover:bg-white/[0.01] transition duration-200">
-                            <td class="p-4 pl-6 font-mono text-[10px] text-coffee-500 border-print" th:text="${#temporals.format(tx.transactionDate, 'dd-MM-yyyy HH:mm')}">01-06-2026 14:30</td>
-                            <td class="p-4 font-bold text-white print:text-black border-print" th:text="${tx.product.name}">Gayo Washed</td>
-                            <td class="p-4 text-center border-print">
-                                <span th:if="${tx.type == 'IN'}" class="bg-green-950/60 print:bg-green-100 text-green-400 print:text-green-700 border border-green-900/30 print:border-green-200 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase inline-block">
-                                    IN
-                                </span>
-                                <span th:if="${tx.type == 'OUT'}" class="bg-red-950/60 print:bg-red-100 text-red-400 print:text-red-700 border border-red-900/30 print:border-red-200 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase inline-block">
-                                    OUT
-                                </span>
-                            </td>
-                            <td class="p-4 text-center font-bold text-white print:text-black font-mono border-print" th:text="${tx.quantity} + ' Kg'">10 Kg</td>
-                            <td class="p-4 text-coffee-300 print:text-stone-700 font-mono text-[10px] border-print" th:text="${tx.performedBy}">admin</td>
-                            <td class="p-4 text-center font-mono border-print" th:text="${tx.invoiceNumber != null ? tx.invoiceNumber : '-'}">INV-12345</td>
-                            <td class="p-4 pr-6 text-coffee-400 print:text-stone-600 border-print" th:text="${tx.notes}">Catatan</td>
-                        </tr>
-                        <tr th:if="${transactions.isEmpty()}">
-                            <td colspan="7" class="p-10 text-center text-coffee-500 border-print">
-                                <i class="fa-regular fa-folder-open text-2xl mb-3 block"></i>
-                                Tidak ditemukan data transaksi yang sesuai dengan filter.
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <!-- PRINT SIGNATURE AREA (Hanya muncul saat dicetak) -->
-        <div class="hidden print:flex justify-end mt-16 text-xs text-black">
-            <div class="text-center w-64">
-                <p class="mb-16">Mengetahui,<br>Kepala Gudang Arabica.co</p>
-                <div class="border-b border-black w-48 mx-auto mb-1"></div>
-                <p class="font-bold font-mono">........................................</p>
-            </div>
+      <!-- PRINT HEADER (Hanya muncul saat cetak kertas/PDF) -->
+      <div class="hidden print:block mb-8 pb-4 border-b border-gray-200">
+        <div class="flex justify-between items-center">
+          <div>
+            <h2 class="text-xl font-bold text-black">ARABICA.CO WAREHOUSE</h2>
+            <p class="text-[10px] text-gray-500">
+              Laporan Resmi Rekapitulasi Stok Gudang Kopi
+            </p>
+          </div>
+          <div class="text-right text-[10px] text-gray-500">
+            <p>
+              Dicetak Pada:
+              <span
+                th:text="${#temporals.format(#temporals.createNow(), 'dd MMMM yyyy HH:mm')}"
+                >06 Juni 2026</span
+              >
+            </p>
+            <p>Status: Laporan Terfilter</p>
+          </div>
         </div>
+      </div>
+
+      <!-- GLASSMORPHIC FILTER PANEL -->
+      <form
+        th:action="@{/reports}"
+        method="GET"
+        class="glass-card p-6 rounded-3xl mb-8 space-y-4 border border-white/5 no-print"
+      >
+        <h3
+          class="text-xs font-bold text-white tracking-tight uppercase border-b border-white/5 pb-2 mb-3"
+        >
+          Filter Pencarian Laporan
+        </h3>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <!-- Select Product -->
+          <div class="space-y-1">
+            <label for="productId" class="text-[10px] font-bold text-coffee-300"
+              >Varian Kopi</label
+            >
+            <select
+              id="productId"
+              name="productId"
+              class="block w-full px-3 py-2 bg-coffee-950/60 border border-white/10 rounded-xl text-xs text-white placeholder-coffee-600 focus:outline-none focus:border-coffee-400 focus:ring-1 focus:ring-coffee-400/30 transition duration-300"
+            >
+              <option value="">-- Semua Kopi --</option>
+              <option
+                th:each="p : ${products}"
+                th:value="${p.id}"
+                th:text="${p.name}"
+                th:selected="${p.id == selectedProductId}"
+              ></option>
+            </select>
+          </div>
+
+          <!-- Select Transaction Type -->
+          <div class="space-y-1">
+            <label for="type" class="text-[10px] font-bold text-coffee-300"
+              >Tipe Transaksi</label
+            >
+            <select
+              id="type"
+              name="type"
+              class="block w-full px-3 py-2 bg-coffee-950/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-coffee-400 focus:ring-1 focus:ring-coffee-400/30 transition duration-300"
+            >
+              <option value="ALL" th:selected="${'ALL' == selectedType}">
+                Semua Tipe
+              </option>
+              <option value="IN" th:selected="${'IN' == selectedType}">
+                Masuk (IN)
+              </option>
+              <option value="OUT" th:selected="${'OUT' == selectedType}">
+                Keluar (OUT)
+              </option>
+            </select>
+          </div>
+
+          <!-- Start Date -->
+          <div class="space-y-1">
+            <label for="startDate" class="text-[10px] font-bold text-coffee-300"
+              >Tanggal Mulai</label
+            >
+            <input
+              type="date"
+              id="startDate"
+              name="startDate"
+              th:value="${selectedStartDate}"
+              class="block w-full px-3 py-2 bg-coffee-950/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-coffee-400 focus:ring-1 focus:ring-coffee-400/30 transition duration-300"
+            />
+          </div>
+
+          <!-- End Date -->
+          <div class="space-y-1">
+            <label for="endDate" class="text-[10px] font-bold text-coffee-300"
+              >Tanggal Selesai</label
+            >
+            <input
+              type="date"
+              id="endDate"
+              name="endDate"
+              th:value="${selectedEndDate}"
+              class="block w-full px-3 py-2 bg-coffee-950/60 border border-white/10 rounded-xl text-xs text-white focus:outline-none focus:border-coffee-400 focus:ring-1 focus:ring-coffee-400/30 transition duration-300"
+            />
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-2">
+          <a
+            href="/reports"
+            class="px-4 py-2 bg-coffee-900/40 hover:bg-coffee-900/80 border border-white/5 rounded-xl text-xs font-bold transition"
+            >Reset Filter</a
+          >
+          <button
+            type="submit"
+            class="px-5 py-2 bg-gradient-to-r from-coffee-500 to-coffee-700 hover:from-coffee-400 hover:to-coffee-600 text-coffee-950 font-bold text-xs rounded-xl shadow-md transition"
+          >
+            Terapkan Filter
+          </button>
+        </div>
+      </form>
+
+      <!-- AGGREGATION METRIC CARDS -->
+      <section class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8 print-full">
+        <!-- Total In -->
+        <div
+          class="glass-card p-5 rounded-3xl relative overflow-hidden flex items-center justify-between border-print text-print-black"
+        >
+          <div>
+            <span
+              class="text-[9px] text-coffee-400/60 uppercase tracking-widest font-bold block mb-1"
+              >Total Stok Masuk</span
+            >
+            <span
+              class="text-2xl font-extrabold text-green-400 print:text-green-600"
+              th:text="${totalIn} + ' Kg'"
+              >100 Kg</span
+            >
+          </div>
+          <div
+            class="w-10 h-10 rounded-xl bg-green-950/20 border border-green-900/20 flex items-center justify-center text-green-400 text-sm no-print"
+          >
+            <i class="fa-solid fa-arrow-turn-down"></i>
+          </div>
+        </div>
+
+        <!-- Total Out -->
+        <div
+          class="glass-card p-5 rounded-3xl relative overflow-hidden flex items-center justify-between border-print text-print-black"
+        >
+          <div>
+            <span
+              class="text-[9px] text-coffee-400/60 uppercase tracking-widest font-bold block mb-1"
+              >Total Stok Keluar</span
+            >
+            <span
+              class="text-2xl font-extrabold text-red-400 print:text-red-600"
+              th:text="${totalOut} + ' Kg'"
+              >40 Kg</span
+            >
+          </div>
+          <div
+            class="w-10 h-10 rounded-xl bg-red-950/20 border border-red-900/20 flex items-center justify-center text-red-400 text-sm no-print"
+          >
+            <i class="fa-solid fa-arrow-turn-up"></i>
+          </div>
+        </div>
+
+        <!-- Net Change -->
+        <div
+          class="glass-card p-5 rounded-3xl relative overflow-hidden flex items-center justify-between border-print text-print-black"
+        >
+          <div>
+            <span
+              class="text-[9px] text-coffee-400/60 uppercase tracking-widest font-bold block mb-1"
+              >Selisih Bersih (Net)</span
+            >
+            <span
+              class="text-2xl font-extrabold"
+              th:class="${netChange >= 0} ? 'text-amber-400 print:text-amber-600' : 'text-rose-400 print:text-rose-600'"
+              th:text="${netChange} + ' Kg'"
+              >+60 Kg</span
+            >
+          </div>
+          <div
+            class="w-10 h-10 rounded-xl bg-coffee-800/40 border border-white/5 flex items-center justify-center text-coffee-400 text-sm no-print"
+          >
+            <i class="fa-solid fa-scale-balanced"></i>
+          </div>
+        </div>
+      </section>
+
+      <!-- REPORTS RESULT TABLE CARD -->
+      <section
+        class="glass-card rounded-3xl overflow-hidden border border-white/5 print-full"
+      >
+        <div class="px-6 py-5 border-b border-white/5 bg-black/10 no-print">
+          <h3
+            class="text-sm font-bold text-white tracking-tight flex items-center gap-2"
+          >
+            <i class="fa-solid fa-list-check text-coffee-400"></i>
+            <span>Tabel Hasil Rekap Transaksi</span>
+          </h3>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table
+            class="w-full text-left border-collapse border-print text-print-black"
+          >
+            <thead>
+              <tr
+                class="border-b border-white/5 bg-white/[0.01] bg-print-gray text-[10px] uppercase font-bold text-coffee-400/80 tracking-wider"
+              >
+                <th class="p-4 pl-6 border-print">Tanggal & Waktu</th>
+                <th class="p-4 border-print">Nama Kopi</th>
+                <th class="p-4 text-center border-print">Tipe</th>
+                <th class="p-4 text-center border-print">Jumlah (Kg)</th>
+                <th class="p-4 border-print">Petugas</th>
+                <th class="p-4 text-center border-print">No. Invoice</th>
+                <th class="p-4 pr-6 border-print">Catatan</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5 divide-print text-xs">
+              <tr
+                th:each="tx : ${transactions}"
+                class="hover:bg-white/[0.01] transition duration-200"
+              >
+                <td
+                  class="p-4 pl-6 font-mono text-[10px] text-coffee-500 border-print"
+                  th:text="${#temporals.format(tx.transactionDate, 'dd-MM-yyyy HH:mm')}"
+                >
+                  01-06-2026 14:30
+                </td>
+                <td
+                  class="p-4 font-bold text-white print:text-black border-print"
+                  th:text="${tx.product.name}"
+                >
+                  Gayo Washed
+                </td>
+                <td class="p-4 text-center border-print">
+                  <span
+                    th:if="${tx.type == 'IN'}"
+                    class="bg-green-950/60 print:bg-green-100 text-green-400 print:text-green-700 border border-green-900/30 print:border-green-200 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase inline-block"
+                  >
+                    IN
+                  </span>
+                  <span
+                    th:if="${tx.type == 'OUT'}"
+                    class="bg-red-950/60 print:bg-red-100 text-red-400 print:text-red-700 border border-red-900/30 print:border-red-200 px-2 py-0.5 rounded-full text-[9px] font-bold uppercase inline-block"
+                  >
+                    OUT
+                  </span>
+                </td>
+                <td
+                  class="p-4 text-center font-bold text-white print:text-black font-mono border-print"
+                  th:text="${tx.quantity} + ' Kg'"
+                >
+                  10 Kg
+                </td>
+                <td
+                  class="p-4 text-coffee-300 print:text-stone-700 font-mono text-[10px] border-print"
+                  th:text="${tx.performedBy}"
+                >
+                  admin
+                </td>
+                <td
+                  class="p-4 text-center font-mono border-print"
+                  th:text="${tx.invoiceNumber != null ? tx.invoiceNumber : '-'}"
+                >
+                  INV-12345
+                </td>
+                <td
+                  class="p-4 pr-6 text-coffee-400 print:text-stone-600 border-print"
+                  th:text="${tx.notes}"
+                >
+                  Catatan
+                </td>
+              </tr>
+              <tr th:if="${transactions.isEmpty()}">
+                <td
+                  colspan="7"
+                  class="p-10 text-center text-coffee-500 border-print"
+                >
+                  <i class="fa-regular fa-folder-open text-2xl mb-3 block"></i>
+                  Tidak ditemukan data transaksi yang sesuai dengan filter.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PRINT SIGNATURE AREA (Hanya muncul saat dicetak) -->
+      <div class="hidden print:flex justify-end mt-16 text-xs text-black">
+        <div class="text-center w-64">
+          <p class="mb-16">Mengetahui,<br />Kepala Gudang Arabica.co</p>
+          <div class="border-b border-black w-48 mx-auto mb-1"></div>
+          <p class="font-bold font-mono">
+            ........................................
+          </p>
+        </div>
+      </div>
     </main>
     <!-- PWA & Mobile Navigation JS -->
     <script>
-        // Sidebar toggle for mobile responsive layouts
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebarOverlay');
-            sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
-        }
+      // Sidebar toggle for mobile responsive layouts
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        sidebar.classList.toggle("-translate-x-full");
+        overlay.classList.toggle("hidden");
+      }
 
-        // Register PWA Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/service-worker.js')
-                    .then(reg => console.log('ServiceWorker registered:', reg))
-                    .catch(err => console.error('ServiceWorker registration failed:', err));
-            });
-        }
+      // Register PWA Service Worker
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker
+            .register("/service-worker.js")
+            .then((reg) => console.log("ServiceWorker registered:", reg))
+            .catch((err) =>
+              console.error("ServiceWorker registration failed:", err),
+            );
+        });
+      }
     </script>
-</body>
+  </body>
 </html>

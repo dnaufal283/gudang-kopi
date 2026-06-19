@@ -1,0 +1,443 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Dashboard - Arabica Warehouse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Plus Jakarta Sans", "sans-serif"],
+            },
+            colors: {
+              coffee: {
+                50: "#FDFBF7",
+                100: "#F3EFE9",
+                200: "#E6DEC9",
+                300: "#D5C4A1",
+                400: "#B09874",
+                500: "#8E704D",
+                600: "#735238",
+                700: "#5A3D2A",
+                800: "#3D2518",
+                900: "#1F100A",
+                950: "#0C0604",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #0c0604;
+        background-image:
+          radial-gradient(
+            at 0% 0%,
+            rgba(142, 112, 77, 0.08) 0px,
+            transparent 50%
+          ),
+          radial-gradient(
+            at 100% 100%,
+            rgba(31, 16, 10, 0.2) 0px,
+            transparent 50%
+          );
+      }
+      .glass-card {
+        background: rgba(31, 16, 10, 0.45);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      .glass-sidebar {
+        background: rgba(19, 10, 6, 0.95);
+        border-right: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: rgba(31, 16, 10, 0.3);
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(142, 112, 77, 0.3);
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(142, 112, 77, 0.5);
+      }
+    </style>
+  </head>
+  <body
+    class="text-coffee-100 min-h-screen flex font-sans overflow-x-hidden relative"
+  >
+    <div
+      id="sidebarOverlay"
+      onclick="toggleSidebar()"
+      class="hidden fixed inset-0 bg-black/60 z-30 transition-opacity duration-300 lg:hidden"
+    ></div>
+
+    <aside
+      id="sidebar"
+      class="w-64 glass-sidebar flex flex-col shrink-0 min-h-screen fixed lg:sticky top-0 left-0 z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300"
+    >
+      <div
+        class="p-6 border-b border-white/5 flex items-center justify-between"
+      >
+        <a href="/" class="flex items-center gap-3">
+          <div
+            class="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-coffee-800 to-coffee-500 border border-coffee-400/20 shadow-md"
+          >
+            <i class="fa-solid fa-mug-hot text-coffee-100"></i>
+          </div>
+          <div>
+            <span class="text-lg font-extrabold tracking-tight text-white block"
+              >ARABICA<span class="text-coffee-400">.CO</span></span
+            >
+            <span
+              class="text-[10px] text-coffee-400/50 block font-semibold -mt-1"
+              >WAREHOUSE</span
+            >
+          </div>
+        </a>
+        <button
+          onclick="toggleSidebar()"
+          class="lg:hidden text-coffee-400 hover:text-white transition-colors duration-200"
+        >
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <nav class="flex-1 px-4 py-6 space-y-2">
+        <a
+          href="/"
+          class="flex items-center gap-3 px-4 py-3 bg-gradient-to-r from-coffee-800/60 to-coffee-950/20 text-coffee-300 rounded-xl border border-white/5 font-semibold transition duration-200"
+        >
+          <i class="fa-solid fa-house"></i>
+          <span>Beranda Staff</span>
+        </a>
+
+        <a
+          href="/transactions"
+          class="flex items-center gap-3 px-4 py-3 hover:bg-white/[0.03] text-coffee-400 hover:text-coffee-100 rounded-xl font-medium transition duration-200"
+        >
+          <i class="fa-solid fa-right-left text-coffee-400"></i>
+          <span>Transaksi In / Out</span>
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-white/5 bg-black/20">
+        <div class="flex items-center gap-3 mb-4">
+          <div
+            class="w-10 h-10 rounded-full bg-coffee-800 flex items-center justify-center border border-white/10 font-bold text-coffee-300"
+          >
+            <span
+              th:text="${currentUser != null ? #strings.substring(currentUser.fullName, 0, 1) : 'A'}"
+              >A</span
+            >
+          </div>
+          <div class="overflow-hidden">
+            <span
+              class="text-xs font-semibold text-white block truncate"
+              th:text="${currentUser != null ? currentUser.fullName : 'Administrator'}"
+              >Admin Gudang</span
+            >
+            <span
+              class="text-[10px] text-coffee-400/60 font-medium uppercase tracking-wider"
+              th:text="${currentUser != null ? currentUser.role : 'ADMIN'}"
+              >ADMIN</span
+            >
+          </div>
+        </div>
+        <a
+          href="/logout"
+          class="flex items-center justify-center gap-2 w-full py-2.5 bg-red-950/30 hover:bg-red-900/40 text-red-300 border border-red-900/30 rounded-xl text-xs font-semibold transition duration-200"
+        >
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          <span>Keluar Aplikasi</span>
+        </a>
+      </div>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto">
+      <div class="p-6 lg:p-10 max-w-7xl mx-auto w-full flex flex-col gap-8">
+        <header class="mb-8">
+          <div class="flex items-center gap-4 mb-2">
+            <button
+              onclick="toggleSidebar()"
+              class="lg:hidden w-10 h-10 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-center text-coffee-300 hover:bg-white/[0.05] transition duration-200"
+            >
+              <i class="fa-solid fa-bars"></i>
+            </button>
+
+            <h1 class="text-3xl font-bold text-white">
+              Selamat Datang,
+              <span class="text-coffee-400" th:text="${currentUser.fullName}"
+                >Staff</span
+              >!
+            </h1>
+          </div>
+
+          <p class="text-sm text-gray-400 ml-0 lg:ml-14">
+            Siap untuk shift hari ini? Pantau pergerakan stok dan catat log
+            dengan akurat.
+          </p>
+        </header>
+
+        <div th:if="${not #lists.isEmpty(lowStockProducts)}" class="relative">
+          <div
+            class="bg-red-950/30 border border-red-500/40 rounded-2xl p-6 relative overflow-hidden backdrop-blur-md"
+          >
+            <div
+              class="absolute top-0 left-0 w-1.5 h-full bg-red-500 shadow-[0_0_15px_#ef4444]"
+            ></div>
+
+            <h3 class="text-red-400 font-bold mb-4 flex items-center gap-2">
+              <i class="fa-solid fa-triangle-exclamation animate-pulse"></i>
+              Peringatan Sistem: Stok Kritis (Di Bawah 10 Kg)
+            </h3>
+
+            <div
+              th:if="${success}"
+              class="mb-4 bg-green-950/50 border border-green-500/40 text-green-300 p-3 rounded-xl text-xs flex items-center gap-2"
+            >
+              <i class="fa-solid fa-circle-check text-green-400"></i>
+              <span th:text="${success}">Laporan terkirim!</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div
+                th:each="p : ${lowStockProducts}"
+                class="bg-black/50 border border-red-900/50 p-3 rounded-xl flex justify-between items-center gap-4"
+              >
+                <div class="overflow-hidden">
+                  <span
+                    class="text-sm font-semibold text-gray-200 block truncate"
+                    th:text="${p.name}"
+                    >Varian Kopi</span
+                  >
+                  <span
+                    class="text-[11px] text-red-400 font-bold font-mono"
+                    th:text="'Sisa: ' + ${p.stock} + ' Kg'"
+                    >Sisa 0 Kg</span
+                  >
+                </div>
+
+                <form
+                  th:action="@{/staff/report-low-stock}"
+                  method="POST"
+                  class="shrink-0"
+                >
+                  <input
+                    type="hidden"
+                    name="productName"
+                    th:value="${p.name}"
+                  />
+                  <input
+                    type="hidden"
+                    name="currentStock"
+                    th:value="${p.stock}"
+                  />
+                  <button
+                    type="submit"
+                    class="bg-red-600/80 hover:bg-red-500 text-white text-[10px] font-bold px-3 py-1.5 rounded-lg border border-red-500/20 transition duration-200 flex items-center gap-1"
+                  >
+                    <i class="fa-solid fa-paper-plane text-[9px]"></i> Laporkan
+                  </button>
+                </form>
+              </div>
+            </div>
+
+            <p
+              class="text-[11px] text-red-400/70 mt-4 font-medium tracking-wide"
+            >
+              <i class="fa-solid fa-circle-info mr-1.5"></i>
+              Tindakan diperlukan: Tekan tombol **Laporkan** untuk mengirim
+              sinyal restok masuk ke menu Admin secara langsung.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div
+            class="glass-card p-8 rounded-3xl flex flex-col justify-center items-center text-center border-t-4 border-t-coffee-500 h-[400px]"
+          >
+            <div
+              class="w-20 h-20 rounded-full bg-coffee-800/30 flex items-center justify-center mb-6 border border-coffee-500/20"
+            >
+              <i class="fa-solid fa-barcode text-4xl text-coffee-400"></i>
+            </div>
+            <h2 class="text-xl font-bold text-white mb-3">
+              Input Transaksi Baru
+            </h2>
+            <p class="text-xs text-gray-400 mb-8 max-w-[250px]">
+              Catat barang masuk dari supplier atau barang keluar untuk pesanan
+              secara real-time.
+            </p>
+            <a
+              href="/transactions"
+              class="w-full max-w-[280px] py-4 bg-gradient-to-r from-coffee-500 to-coffee-600 hover:from-coffee-400 hover:to-coffee-500 text-black font-bold rounded-xl transition duration-300 shadow-[0_0_15px_rgba(176,152,116,0.3)]"
+            >
+              <i class="fa-solid fa-plus mr-2"></i> Buka Form Transaksi
+            </a>
+          </div>
+
+          <div
+            class="glass-card p-6 rounded-3xl bg-gradient-to-br from-[#1a150b] to-[#141008] border border-amber-900/30 flex flex-col h-[400px]"
+          >
+            <h3
+              class="text-sm font-bold text-amber-500 mb-5 border-b border-amber-900/40 pb-4 flex items-center gap-2 shrink-0"
+            >
+              <i class="fa-solid fa-note-sticky"></i> Papan Operan Shift
+            </h3>
+
+            <div
+              class="space-y-3 mb-5 flex-1 overflow-y-auto pr-2"
+              id="notes-container"
+            >
+              <div
+                th:each="note : ${shiftNotes}"
+                class="bg-amber-500/10 border border-amber-500/20 p-3 rounded-xl relative"
+              >
+                <div class="flex justify-between items-start mb-1.5">
+                  <span
+                    class="text-[10px] font-bold text-amber-400"
+                    th:text="${note.dibuatOleh}"
+                    >Nama Staff</span
+                  >
+                  <span
+                    class="text-[9px] text-amber-600/70 font-mono"
+                    th:text="${#temporals.format(note.waktuDibuat, 'dd/MM HH:mm')}"
+                    >Waktu</span
+                  >
+                </div>
+                <p
+                  class="text-xs text-amber-100/90 leading-relaxed"
+                  th:text="${note.pesan}"
+                >
+                  Isi pesan operan shift.
+                </p>
+              </div>
+              <div
+                th:if="${shiftNotes.isEmpty()}"
+                class="text-center py-4 text-xs text-amber-700/50 italic"
+              >
+                Belum ada catatan operan.
+              </div>
+            </div>
+
+            <form
+              th:action="@{/staff/notes/add}"
+              method="POST"
+              class="mt-auto border-t border-amber-900/40 pt-4 shrink-0"
+            >
+              <div class="flex gap-2">
+                <input
+                  type="text"
+                  name="pesan"
+                  required
+                  placeholder="Ketik pesan operan untuk shift selanjutnya..."
+                  class="flex-1 bg-black/40 border border-amber-900/50 rounded-xl px-3 py-2 text-xs text-amber-100 placeholder-amber-800/50 focus:outline-none focus:border-amber-500/50"
+                />
+                <button
+                  type="submit"
+                  class="bg-amber-600 hover:bg-amber-500 text-black px-3 py-2 rounded-xl text-xs font-bold transition"
+                >
+                  <i class="fa-solid fa-paper-plane"></i>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="glass-card p-6 rounded-3xl">
+          <h3
+            class="text-sm font-bold text-white mb-5 border-b border-white/5 pb-4 flex items-center gap-2"
+          >
+            <i class="fa-solid fa-bolt text-coffee-400"></i> Aktivitas Gudang
+            Terkini
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead>
+                <tr class="text-gray-500 uppercase tracking-wider bg-black/20">
+                  <th class="p-3 font-semibold rounded-l-lg">Waktu</th>
+                  <th class="p-3 font-semibold">Produk</th>
+                  <th class="p-3 font-semibold text-center">Tipe</th>
+                  <th class="p-3 font-semibold text-center rounded-r-lg">
+                    Qty
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-white/5">
+                <tr
+                  th:each="tx : ${recentTransactions}"
+                  class="hover:bg-white/[0.02] transition"
+                >
+                  <td
+                    class="p-3 text-gray-400 font-mono"
+                    th:text="${#temporals.format(tx.transactionDate, 'HH:mm | dd MMM')}"
+                  >
+                    10:00
+                  </td>
+                  <td
+                    class="p-3 font-bold text-white"
+                    th:text="${tx.product.name}"
+                  >
+                    Gayo
+                  </td>
+                  <td class="p-3 text-center">
+                    <span
+                      th:if="${tx.type == 'IN'}"
+                      class="bg-green-950/60 text-green-400 border border-green-900/30 px-2.5 py-1 rounded-md text-[10px] font-bold"
+                      >IN</span
+                    >
+                    <span
+                      th:if="${tx.type == 'OUT'}"
+                      class="bg-red-950/60 text-red-400 border border-red-900/30 px-2.5 py-1 rounded-md text-[10px] font-bold"
+                      >OUT</span
+                    >
+                  </td>
+                  <td
+                    class="p-3 text-center font-mono text-coffee-400 font-bold"
+                    th:text="${tx.quantity} + ' Kg'"
+                  >
+                    5 Kg
+                  </td>
+                </tr>
+                <tr th:if="${recentTransactions.isEmpty()}">
+                  <td colspan="4" class="py-10 text-center text-gray-500">
+                    <i class="fa-solid fa-box-open text-2xl mb-2 block"></i>
+                    Belum ada pergerakan stok hari ini.
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script>
+      // Sidebar toggle for mobile responsive layouts
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
+        sidebar.classList.toggle("-translate-x-full");
+        overlay.classList.toggle("hidden");
+      }
+    </script>
+  </body>
+</html>
